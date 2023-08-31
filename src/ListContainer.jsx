@@ -5,13 +5,12 @@ import Button from './components/Button';
 import ListItem from './components/ListItem';
 import ListItemLayout from './components/ListItemLayout';
 import cx from 'clsx';
+import { IoMdArrowDropdown } from 'react-icons/io';
+import Modal from './components/Modal';
 
 export default function ListContainer() {
   const [inputValue, setInputValue] = useState('is:pr is:open');
   const [isOpenMode, setIsOpenMode] = useState(true);
-
-  const openModeDataSize = 1;
-  const closeModeDataSize = 2;
 
   return (
     <div className={styles.listContainer}>
@@ -27,21 +26,9 @@ export default function ListContainer() {
           New Issue
         </Button>
       </div>
-      <>
-        <OpenClosedFilter size={openModeDataSize} state='Open' onClick={() => setIsOpenMode(true)} selected={isOpenMode}  />
-        <OpenClosedFilter size={closeModeDataSize} state='Closed' onClick={() => setIsOpenMode(false)} selected={!isOpenMode}  />
-      </>
-        
-      
+      <OpenrClosedFilters />
       <ListItemLayout className={styles.listFilter}>
-        <div className={styles.filterLists}>
-          <span>Author</span>
-          <span>Label</span>
-          <span>Projects</span>
-          <span>Milestones</span>
-          <span>Assignee</span>
-          <span>Sort</span>
-        </div>
+        <ListFilter />
       </ListItemLayout>
       <div className={styles.container}>
         <ListItem
@@ -56,6 +43,55 @@ export default function ListContainer() {
         />
       </div>
     </div>
+  );
+}
+
+function ListFilter() {
+  const [showModal, setShowModal] = useState(false)
+
+  return (
+    <>
+    <div className={styles.filterLists}>
+      <ListFilterItem onClick={()=> setShowModal(true)}>Author</ListFilterItem>
+      <ListFilterItem onClick={()=> setShowModal(true)}>Label</ListFilterItem>
+      <ListFilterItem onClick={()=> setShowModal(true)}>Projects</ListFilterItem>
+      <ListFilterItem onClick={()=> setShowModal(true)}>Milestones</ListFilterItem>
+      <ListFilterItem onClick={()=> setShowModal(true)}>Assignee</ListFilterItem>
+      <ListFilterItem onClick={()=> setShowModal(true)}>Sort</ListFilterItem>
+    </div>
+    <Modal opened={showModal} onClose={() => setShowModal(false)}/>
+    </>
+  );
+}
+
+function ListFilterItem({ onClick, children }) {
+  return (
+    <span role="button" onClick={onClick}>
+      {children} <IoMdArrowDropdown />
+    </span>
+  );
+}
+
+function OpenrClosedFilters({ data }) {
+  const [isOpenMode, setIsOpenMode] = useState(true);
+  const openModeDataSize = 1;
+  const closeModeDataSize = 2;
+
+  return (
+    <>
+      <OpenClosedFilter
+        size={openModeDataSize}
+        state="Open"
+        onClick={() => setIsOpenMode(true)}
+        selected={isOpenMode}
+      />
+      <OpenClosedFilter
+        size={closeModeDataSize}
+        state="Closed"
+        onClick={() => setIsOpenMode(false)}
+        selected={!isOpenMode}
+      />
+    </>
   );
 }
 
