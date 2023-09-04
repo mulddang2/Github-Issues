@@ -5,92 +5,68 @@ import Button from './components/Button';
 import ListItem from './components/ListItem';
 import ListItemLayout from './components/ListItemLayout';
 import cx from 'clsx';
-import { IoMdArrowDropdown } from 'react-icons/io';
-import Modal from './components/Modal';
+import Pagination from './components/Pagination';
+import ListFilter from './components/ListFilter';
 
 export default function ListContainer() {
   const [inputValue, setInputValue] = useState('is:pr is:open');
 
   // 받아온 데이터를 저장
   const [list, setList] = useState([]);
+  const [page, setPage] = useState(1);
 
-  return (
-    <div className={styles.listContainer}>
-      <div className={styles.topSection}>
-        <input
-          className={styles.input}
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-        />
-        <Button
-          style={{ fontSize: '14px', backgroundColor: 'green', color: 'white' }}
-        >
-          New Issue
-        </Button>
-      </div>
-      <OpenrClosedFilters />
-      <ListItemLayout className={styles.listFilter}>
-        <ListFilter
-          onChangeFilter={(filteredData) => {
-            // 필터링된 요소에 맞게 데이터를 불러오기
-          }}
-        />
-      </ListItemLayout>
-      <div className={styles.container}>
-        {list.map((listItem, index) => (
-          <ListItem
-            key={index}
-            // checked={checkedList.filter((item) => item.id == '0')[0]}
-            // onChangeCheckBox={() => setCheckedList((checkedList) => [...checkedList, '0'])}
-            badges={[
-              {
-                color: 'red',
-                title: 'bug',
-              },
-            ]}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function ListFilter({ onChangeFilter }) {
+  // const MAX_PAGE = getData().totalCount
   return (
     <>
-      <div className={styles.filterLists}>
-        <ListFilterItem>Author</ListFilterItem>
-        <ListFilterItem>Label</ListFilterItem>
-        <ListFilterItem>Projects</ListFilterItem>
-        <ListFilterItem>Milestones</ListFilterItem>
-        <ListFilterItem>Assignee</ListFilterItem>
-        <ListFilterItem>Sort</ListFilterItem>
+      <div className={styles.listContainer}>
+        <div className={styles.topSection}>
+          <input
+            className={styles.input}
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+          />
+          <Button
+            style={{
+              fontSize: '14px',
+              backgroundColor: 'green',
+              color: 'white',
+            }}
+          >
+            New Issue
+          </Button>
+        </div>
+        <OpenrClosedFilters />
+        <ListItemLayout className={styles.listFilter}>
+          <ListFilter
+            onChangeFilter={(filteredData) => {
+              // 필터링된 요소에 맞게 데이터를 불러오기
+            }}
+          />
+        </ListItemLayout>
+        <div className={styles.container}>
+          {list.map((listItem, index) => (
+            <ListItem
+              key={index}
+              // checked={checkedList.filter((item) => item.id == '0')[0]}
+              // onChangeCheckBox={() => setCheckedList((checkedList) => [...checkedList, '0'])}
+              badges={[
+                {
+                  color: 'red',
+                  title: 'bug',
+                },
+              ]}
+            />
+          ))}
+        </div>
       </div>
-    </>
-  );
-}
-
-function ListFilterItem({ onClick, children, onChangeFilter }) {
-  const [showModal, setShowModal] = useState(false);
-
-  return (
-    <div className={styles.filterItem}>
-      <span role="button" onClick={() => setShowModal(true)}>
-        {children} <IoMdArrowDropdown />
-      </span>
-      <div className={styles.modalContainer}>
-        <Modal
-          opened={showModal}
-          onClose={() => setShowModal(false)}
-          placeholder="Filter labels"
-          searchDataList={['bug', 'Labels', 'Apple']}
-          onClickCell={() => {
-            // 클릭된 정보를 통해 리스트 필터링
-            onChangeFilter();
-          }}
+      <div className={styles.paginationContainer}>
+        <Pagination
+          maxPage={10}
+          currentPage={page}
+          onClickPageButton={(number) => setPage(number)}
         />
       </div>
-    </div>
+    </>
   );
 }
 
