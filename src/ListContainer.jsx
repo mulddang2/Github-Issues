@@ -26,11 +26,7 @@ export default function ListContainer() {
             onChange={(e) => setInputValue(e.target.value)}
           />
           <Button
-            style={{
-              fontSize: '14px',
-              backgroundColor: 'green',
-              color: 'white',
-            }}
+            className={styles.newIssue}
           >
             New Issue
           </Button>

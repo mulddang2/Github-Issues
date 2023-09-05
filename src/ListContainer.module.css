@@ -43,3 +43,9 @@
   display: flex;
   justify-content: center;
 }
+
+.newIssue {
+  font-size: 14px;
+  background-color: green;
+  color: #fff;
+}
