@@ -1,5 +1,7 @@
+/* eslint-disable no-undef */
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 import styles from './ListContainer.module.css';
 import Button from './components/Button';
 import ListItem from './components/ListItem';
@@ -15,7 +17,27 @@ export default function ListContainer() {
   const [list, setList] = useState([]);
   const [page, setPage] = useState(1);
 
-  // const MAX_PAGE = getData().totalCount
+  const [checked, setChecked] = useState(false);
+
+
+  async function getData() {
+    const { data } = await axios.get(
+      `https://api.github.com/repos/facebook/react/issues`,
+      {
+        headers: {
+          Authorization: 'import.meta.env.VITE_GITHUB_TOKEN',
+        },
+      }
+    );
+    setList(data);
+    console.log(data)
+
+  }
+
+  useEffect(() => {
+    getData();
+  }, []); // NOTE: 빈 배열을 넣게 되면, dom이 그려진 후에 getData가 실행된다.
+
   return (
     <>
       <div className={styles.listContainer}>
@@ -25,11 +47,7 @@ export default function ListContainer() {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
           />
-          <Button
-            className={styles.newIssue}
-          >
-            New Issue
-          </Button>
+          <Button className={styles.newIssue}>New Issue</Button>
         </div>
         <OpenrClosedFilters />
         <ListItemLayout className={styles.listFilter}>
@@ -40,17 +58,13 @@ export default function ListContainer() {
           />
         </ListItemLayout>
         <div className={styles.container}>
-          {list.map((listItem, index) => (
+          {list.map((item) => (
             <ListItem
-              key={index}
-              // checked={checkedList.filter((item) => item.id == '0')[0]}
-              // onChangeCheckBox={() => setCheckedList((checkedList) => [...checkedList, '0'])}
-              badges={[
-                {
-                  color: 'red',
-                  title: 'bug',
-                },
-              ]}
+            data={item}  
+            key={item.id}
+              checked={checked}
+              onClickCheckBox={() => setChecked((checked) => !checked)}
+              
             />
           ))}
         </div>
