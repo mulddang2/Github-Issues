@@ -7,16 +7,18 @@ export default function ListItem({
   checked,
   onChangeCheckBox,
   onClickTitle,
-  badges,
+  data,
 }) {
+  const badges = data.labels;
+
   return (
-    <ListItemLayout>
+    <ListItemLayout checked={checked}>
       <div>
         <div role="button" onClick={onClickTitle} className={styles.title}>
-          Issue Example
-          {badges &&
+          {data.title}
+          {data.labels.length > 0 &&
             badges.map((badgeProps, idx) => (
-              <Badge key={idx} {...badgeProps} />
+              <Badge key={`${idx}`} {...badgeProps} />
             ))}
         </div>
         <div className={styles.description}># Description</div>
