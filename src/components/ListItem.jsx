@@ -30,8 +30,7 @@ export default function ListItem({
             ))}
         </div>
         <div className={styles.description}>
-          #{data.number} {state} {dayjs(date).fromNow()}
-          {/* console.log({}) */}
+          #{data.number} {state} {dayjs(date).fromNow()} by {data.user.login}
         </div>
       </div>
     </ListItemLayout>
