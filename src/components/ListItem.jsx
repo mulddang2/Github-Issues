@@ -18,7 +18,6 @@ export default function ListItem({
   const badges = data.labels;
   const state = data.state === 'open' ? 'opened' : 'closed';
   const date = data.state === 'open' ? data.created_at : data.closed_at;
-  console.log(date);
   return (
     <ListItemLayout checked={checked}>
       <div>
